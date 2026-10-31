@@ -1,0 +1,41 @@
+[
+  {
+    "external_id": "DEMO-ADV-2026-001",
+    "cve_id": "CVE-2026-4011",
+    "title": "[DEMO FIXTURE] Remote Code Execution in ExampleServer HTTP Core",
+    "description": "DEMO DATA: A critical remote code execution vulnerability was identified in ExampleServer HTTP Core across versions 4.0 through 4.3. Attackers can leverage unauthenticated HTTP header manipulation to execute commands in the host context.",
+    "published_at": "2026-10-28T09:15:00Z",
+    "severity": "CRITICAL",
+    "cvss": 9.8,
+    "exploited": true,
+    "affected_products": [
+      {
+        "vendor": "ExampleCorp",
+        "product": "ExampleServer",
+        "version_range": ">=4.0.0, <=4.3.0"
+      }
+    ],
+    "source_url": "https://example.invalid/advisories/DEMO-ADV-2026-001",
+    "is_synthetic": true
+  },
+  {
+    "external_id": "DEMO-ADV-2026-002",
+    "cve_id": "CVE-2026-1092",
+    "title": "[DEMO FIXTURE] Information Disclosure in LegacyMail Gateway",
+    "description": "DEMO DATA: An information disclosure flaw in LegacyMail Gateway versions below 2.5 allows authenticated users to read log buffers via debug API endpoints.",
+    "published_at": "2026-10-15T12:00:00Z",
+    "severity": "MEDIUM",
+    "cvss": 5.3,
+    "exploited": false,
+    "affected_products": [
+      {
+        "vendor": "LegacySoftware",
+        "product": "LegacyMail",
+        "version_range": "<2.5.0"
+      }
+    ],
+    "source_url": "https://example.invalid/advisories/DEMO-ADV-2026-002",
+    "is_synthetic": true
+  }
+]
+

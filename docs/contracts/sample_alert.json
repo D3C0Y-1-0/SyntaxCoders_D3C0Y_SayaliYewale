@@ -1,0 +1,40 @@
+{
+  "id": "al_001",
+  "score": 82,
+  "band": "critical",
+  "status": "new",
+  "title": "ExampleServer 4.2 may be affected",
+  "summary": "ExampleServer 4.2.1 running on critical asset web-prod-01 is susceptible to active exploitation reported in CVE-2026-4011.",
+  "affected_assets": [
+    {
+      "asset_id": 12,
+      "asset": "web-01",
+      "criticality": "high",
+      "match": "candidate",
+      "confidence": 0.85,
+      "match_reason": "product/version rule"
+    }
+  ],
+  "factors": {
+    "severity": 22,
+    "exploit": 30,
+    "asset_criticality": 18,
+    "confidence": 12
+  },
+  "evidence": [
+    {
+      "source": "demo fixture",
+      "url": "https://example.invalid/advisory",
+      "excerpt": "Illustrative source text"
+    }
+  ],
+  "recommendations": [
+    "Verify installed version",
+    "Apply vendor patch after validation"
+  ],
+  "ai_provider": "deterministic_fallback",
+  "ai_model": "rule-template-v1",
+  "generated_at": "2026-10-31T10:15:00Z",
+  "acknowledged_at": null
+}
+

@@ -1,0 +1,39 @@
+[
+  {
+    "name": "web-prod-01",
+    "product": "ExampleServer",
+    "vendor": "ExampleCorp",
+    "version": "4.2.0",
+    "criticality": "critical",
+    "environment": "demo-production",
+    "owner": "SecOps Team"
+  },
+  {
+    "name": "app-gateway-01",
+    "product": "OpenSSL",
+    "vendor": "OpenSSL Project",
+    "version": "3.0.7",
+    "criticality": "high",
+    "environment": "demo-production",
+    "owner": "Platform Team"
+  },
+  {
+    "name": "db-archive-01",
+    "product": "PostgreSQL",
+    "vendor": "PostgreSQL Global",
+    "version": "15.1",
+    "criticality": "low",
+    "environment": "demo-isolated",
+    "owner": "Data Team"
+  },
+  {
+    "name": "edge-switch-01",
+    "product": "Cisco IOS-XE",
+    "vendor": "Cisco",
+    "version": "17.3",
+    "criticality": "high",
+    "environment": "demo-edge",
+    "owner": "Network Ops"
+  }
+]
+
