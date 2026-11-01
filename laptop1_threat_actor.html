@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SentinelScope | Adversary / Ingestion Console</title>
+  <style>
+    :root {
+      --bg: #09090b;
+      --card-bg: #18181b;
+      --border: #27272a;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --red: #ef4444;
+      --red-glow: rgba(239, 68, 68, 0.4);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "JetBrains Mono", monospace; }
+    body { background: var(--bg); color: var(--text); padding: 24px; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+    .console-card {
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 30px; width: 100%; max-width: 600px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 14px; }
+    .badge { background: #7f1d1d; color: #fca5a5; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 6px; }
+    
+    .field { margin-bottom: 16px; }
+    .field label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; font-weight: 600; }
+    .field input, .field select, .field textarea {
+      width: 100%; background: #09090b; border: 1px solid var(--border); border-radius: 6px;
+      color: #fafafa; padding: 10px 12px; font-family: monospace; font-size: 13px;
+    }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--red); }
+
+    .btn-fire {
+      background: linear-gradient(135deg, #b91c1c, #dc2626); color: white; border: none;
+      width: 100%; padding: 14px; border-radius: 8px; font-size: 15px; font-weight: 700;
+      letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 20px var(--red-glow);
+    }
+    .btn-fire:hover { background: linear-gradient(135deg, #991b1b, #b91c1c); box-shadow: 0 0 30px var(--red-glow); transform: translateY(-1px); }
+    .btn-fire:active { transform: translateY(1px); }
+
+    .btn-reset {
+      background: #27272a; color: var(--text-muted); border: none; width: 100%; padding: 10px;
+      border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 10px;
+    }
+    .btn-reset:hover { background: #3f3f46; color: white; }
+
+    .terminal-output {
+      margin-top: 20px; background: #000; border: 1px solid #27272a; border-radius: 6px;
+      padding: 12px; font-family: "JetBrains Mono", monospace; font-size: 12px; color: #4ade80;
+      min-height: 80px; max-height: 160px; overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="console-card">
+    <div class="header">
+      <div>
+        <h2 style="font-size: 18px; font-weight: 700;">Red Team / Exploit Trigger Console</h2>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Laptop 1 (Member 1: Ingestion & Threat Lead)</p>
+      </div>
+      <span class="badge">ATTACK GENERATOR</span>
+    </div>
+
+    <div class="field">
+      <label>Target Hub Endpoint (Laptop 2 IP)</label>
+      <input type="text" id="hub-url" value="http://127.0.0.1:8000" placeholder="http://192.168.43.15:8000">
+    </div>
+
+    <div class="field">
+      <label>Exploit Advisory Payload</label>
+      <select id="exploit-select" onchange="updatePayload()">
+        <option value="tomcat_rce">CVE-2026-4428: Apache Tomcat 10.1.15 & Redis 7.2.3 RCE (CVSS 9.8)</option>
+        <option value="generic_rce">CVE-2026-4011: ExampleServer HTTP Core RCE (CVSS 9.8)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>JSON Payload</label>
+      <textarea id="payload-json" rows="6"></textarea>
+    </div>
+
+    <button class="btn-fire" onclick="fireExploit()" id="btn-fire">
+      âš¡ FIRE EXPLOIT PAYLOAD TO HUB
+    </button>
+    <button class="btn-reset" onclick="resetDemo()">
+      â†º Reset System to Safe Baseline
+    </button>
+
+    <div class="terminal-output" id="output">
+      [READY] Target hub configured. Press 'FIRE EXPLOIT PAYLOAD' to inject vulnerability.
+    </div>
+  </div>
+
+  <script>
+    const presets = {
+      tomcat_rce: {
+        cve_id: "CVE-2026-4428",
+        title: "Remote Code Execution in Apache Tomcat & Redis Cache",
+        cvss: 9.8,
+        severity: "CRITICAL",
+        attacker_ip: "192.168.43.101",
+        target_components: ["Apache Tomcat 10.1.15", "Redis Server 7.2.3"],
+        compromised_org_a_assets: [
+          "ASSET-01-DNS-CORE", "ASSET-02-EDGE-PROXY", "ASSET-03-WEB-GATEWAY",
+          "ASSET-04-APP-WORKER", "ASSET-05-PAYMENT-API", "ASSET-06-DB-PRIMARY",
+          "ASSET-07-SESSION-CACHE", "ASSET-08-LOG-PIPELINE", "ASSET-09-BACKUP-NODE",
+          "ASSET-10-AUTH-GATEWAY"
+        ],
+        matched_org_b_assets: ["ORG-B-01-PORTAL", "ORG-B-02-CACHE"],
+        description: "Zero-day memory corruption allowing unauthenticated remote code execution. Complete 10-asset perimeter breach on Org 1."
+      },
+      generic_rce: {
+        cve_id: "CVE-2026-4011",
+        title: "Remote Code Execution in ExampleServer HTTP Core",
+        cvss: 9.8,
+        severity: "CRITICAL",
+        attacker_ip: "192.168.43.101",
+        target_components: ["ExampleServer 4.2.1"],
+        compromised_org_a_assets: ["web-prod-01"],
+        matched_org_b_assets: ["ORG-B-01-PORTAL"],
+        description: "Unauthenticated RCE via crafted HTTP request headers."
+      }
+    };
+
+    function updatePayload() {
+      const sel = document.getElementById('exploit-select').value;
+      document.getElementById('payload-json').value = JSON.stringify(presets[sel], null, 2);
+    }
+
+    function logOut(msg) {
+      const el = document.getElementById('output');
+      const time = new Date().toTimeString().split(' ')[0];
+      el.innerHTML = `[${time}] ${msg}<br>` + el.innerHTML;
+    }
+
+    async function fireExploit() {
+      const baseUrl = document.getElementById('hub-url').value.trim().replace(/\/$/, '');
+      const btn = document.getElementById('btn-fire');
+      btn.disabled = true;
+      btn.innerText = 'FIRING EXPLOIT...';
+      try {
+        const payload = JSON.parse(document.getElementById('payload-json').value);
+        logOut(`Transmitting exploit payload to ${baseUrl}/api/v1/trigger-exploit...`);
+        const res = await fetch(`${baseUrl}/api/v1/trigger-exploit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          logOut(`>>> HTTP 200 OK: Exploit ingested! Broadcast sent to Org A & Org B!`);
+        } else {
+          logOut(`Error ${res.status}: ${JSON.stringify(data)}`);
+        }
+      } catch (err) {
+        logOut(`Transmission failed: ${err}. Check IP address & ensure Laptop 2 server is running.`);
+      } finally {
+        btn.disabled = false;
+        btn.innerText = 'âš¡ FIRE EXPLOIT PAYLOAD TO HUB';
+      }
+    }
+
+    async function resetDemo() {
+      const baseUrl = document.getElementById('hub-url').value.trim().replace(/\/$/, '');
+      try {
+        logOut(`Broadcasting reset signal to ${baseUrl}...`);
+        await fetch(`${baseUrl}/api/v1/reset-demo`, { method: 'POST' });
+        logOut(`>>> Reset signal processed.`);
+      } catch (err) {
+        logOut(`Reset error: ${err}`);
+      }
+    }
+
+    let ws = null;
+    function initWebSocket() {
+      const baseUrl = document.getElementById('hub-url').value.trim().replace(/\/$/, '');
+      const host = baseUrl.replace(/^https?:\/\//, '');
+      const protocol = baseUrl.startsWith('https') ? 'wss:' : 'ws:';
+      const myIp = window.location.hostname && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1' ? window.location.hostname : '10.120.135.101';
+      try {
+        ws = new WebSocket(`${protocol}//${host}/ws?role=attacker&ip=${myIp}`);
+        ws.onopen = () => {
+          logOut(`<span style="color:#4ade80;">>>> Mesh WebSocket Connected [Attacker IP: ${myIp}]</span>`);
+          try {
+            ws.send(JSON.stringify({ type: 'REGISTER_NODE', role: 'attacker', ip: myIp, name: 'Laptop 1 (Threat Actor)' }));
+          } catch(e) {}
+        };
+        ws.onclose = () => {
+          setTimeout(initWebSocket, 4000);
+        };
+      } catch(e) {}
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      const host = window.location.host;
+      if (host) {
+        document.getElementById('hub-url').value = `${window.location.protocol}//${host}`;
+      }
+      updatePayload();
+      initWebSocket();
+    });
+  </script>
+</body>
+</html>
+

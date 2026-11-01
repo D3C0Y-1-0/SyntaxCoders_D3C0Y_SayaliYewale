@@ -3,7 +3,6 @@ import type { ThreatItem, ThreatStatus, RiskLevel } from '../data/threats';
 import { initialThreats } from '../data/threats';
 import { api } from '../lib/api';
 import type { Alert, AlertStatus } from '../types/api';
-import confetti from 'canvas-confetti';
 
 interface ThreatContextType {
   threats: ThreatItem[];
@@ -147,23 +146,11 @@ export const ThreatProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const markAsAcknowledged = (id: string) => {
     updateThreatStatus(id, 'Acknowledged');
     showToast('✓ Threat marked as Acknowledged. Workflow assigned.');
-    confetti({
-      particleCount: 40,
-      spread: 50,
-      origin: { y: 0.8 },
-      colors: ['#C6F432', '#7CE04B', '#38BDF8'],
-    });
   };
 
   const markAsResolved = (id: string) => {
     updateThreatStatus(id, 'Resolved');
     showToast('✓ Threat resolved in incident registry.');
-    confetti({
-      particleCount: 50,
-      spread: 65,
-      origin: { y: 0.8 },
-      colors: ['#7CE04B', '#C6F432', '#3B82F6'],
-    });
   };
 
   // Compute live stats from threat records

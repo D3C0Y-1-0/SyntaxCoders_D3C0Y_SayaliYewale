@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom';
 
 interface TopBarProps {
   onSearch?: (query: string) => void;
+  placeholder?: string;
 }
 
-export const TopBar: React.FC<TopBarProps> = ({ onSearch }) => {
+export const TopBar: React.FC<TopBarProps> = ({ onSearch, placeholder = 'Search threats, regions, or CVEs…' }) => {
   const navigate = useNavigate();
   const [searchFocused, setSearchFocused] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -69,7 +70,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearch }) => {
             <Search className={`w-4 h-4 transition-colors ${searchFocused ? 'text-[#C6F432]' : 'text-slate-400'}`} />
             <input
               type="text"
-              placeholder="Search threats, CVEs, or assets…"
+              placeholder={placeholder}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -119,11 +120,8 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearch }) => {
             aria-label="Threat notifications (3 unread)"
           >
             <Bell className="w-4 h-4" />
-            {/* Pulsing Red Badge */}
-            <span className="absolute top-1.5 right-1.5 flex h-2.5 w-2.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500" />
-            </span>
+            {/* Solid Red Badge (no blinking) */}
+            <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-red-500 shadow-[0_0_6px_rgba(239,68,68,0.6)]" />
           </button>
 
           {/* Notifications Dropdown */}
@@ -159,7 +157,7 @@ export const TopBar: React.FC<TopBarProps> = ({ onSearch }) => {
                     className="p-2.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.07] border border-red-500/20 cursor-pointer transition-all"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      <span className="w-2 h-2 rounded-full bg-red-500" />
                       <span className="text-xs font-medium text-white truncate">Windows RCE (CVE-2024-38077)</span>
                     </div>
                     <div className="text-[11px] text-slate-400 mt-1">Matched production financial gateway.</div>

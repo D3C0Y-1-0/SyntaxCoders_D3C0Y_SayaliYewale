@@ -13,7 +13,6 @@ import {
   Check,
   RotateCcw,
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import type { Alert, AlertStatus, SeverityLevel } from '../../types/api';
 import { api } from '../../lib/api';
 
@@ -68,12 +67,6 @@ export const AlertDetailDrawer: React.FC<AlertDetailDrawerProps> = ({
       if (onStatusUpdated) onStatusUpdated(updated);
 
       if (newStatus === 'resolved') {
-        confetti({
-          particleCount: 50,
-          spread: 60,
-          origin: { y: 0.8 },
-          colors: ['#C6F432', '#38BDF8', '#3B5BDB'],
-        });
         setFeedbackMessage('Threat marked as Resolved in incident audit log.');
       } else if (newStatus === 'acknowledged') {
         setFeedbackMessage('Alert Acknowledged by Analyst. Workflow active.');

@@ -154,12 +154,12 @@ export const ReportPreviewCard: React.FC<ReportPreviewCardProps> = ({
           {downloading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin text-black" />
-              <span>Generating Report...</span>
+              <span>Generating PDF...</span>
             </>
           ) : (
             <>
               <Download className="w-4 h-4 stroke-[2.5]" />
-              <span>Download Report</span>
+              <span>Download PDF</span>
             </>
           )}
         </motion.button>

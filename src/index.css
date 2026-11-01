@@ -161,3 +161,52 @@
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(198, 244, 50, 0.4);
 }
+
+/* Threat Map Marker & Arc Animations */
+@keyframes threatPulseHigh {
+  0% {
+    r: 9px;
+    opacity: 0.9;
+  }
+  100% {
+    r: 32px;
+    opacity: 0;
+  }
+}
+
+@keyframes threatPulseMed {
+  0% {
+    r: 7px;
+    opacity: 0.8;
+  }
+  100% {
+    r: 22px;
+    opacity: 0;
+  }
+}
+
+@keyframes threatBreatheLow {
+  0%, 100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes dashFlow {
+  to {
+    stroke-dashoffset: -40;
+  }
+}
+
+.animate-attack-dash {
+  animation: dashFlow 2.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-attack-dash,
+  .threat-pulse-anim {
+    animation: none !important;
+  }
+}

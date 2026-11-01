@@ -212,7 +212,8 @@ export const RecentReportsList: React.FC<RecentReportsListProps> = ({
                     <button
                       type="button"
                       onClick={(e) => onDownloadReport(report, e)}
-                      aria-label={`Download report ${report.title}`}
+                      aria-label={`Download PDF report ${report.title}`}
+                      title="Download PDF"
                       className="w-8 h-8 rounded-xl bg-white/[0.04] hover:bg-[#C6F432] border border-white/10 hover:border-[#C6F432] flex items-center justify-center text-slate-300 hover:text-black transition-all cursor-pointer group/btn shadow-sm"
                     >
                       <Download className="w-3.5 h-3.5 group-hover/btn:translate-y-0.5 transition-transform" />

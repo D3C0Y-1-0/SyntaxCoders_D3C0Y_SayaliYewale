@@ -1,8 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import type { Variants } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion, type Variants } from 'framer-motion';
 import { Check, X } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { ReportsHeader } from '../components/reports/ReportsHeader';
 import { ReportsKPICards } from '../components/reports/ReportsKPICards';
 import { ReportsFilterBar, type FilterState } from '../components/reports/ReportsFilterBar';
@@ -49,13 +47,7 @@ export const ReportsPage: React.FC = () => {
     // Simulate generation delay
     await new Promise((resolve) => setTimeout(resolve, 600));
     downloadReportFile(report);
-    confetti({
-      particleCount: 40,
-      spread: 60,
-      origin: { y: 0.8 },
-      colors: ['#C6F432', '#7CE04B', '#38BDF8'],
-    });
-    showToast(`✓ Report downloaded: ${report.title}`);
+    showToast(`✓ PDF report downloaded: ${report.title}.pdf`);
   };
 
   // Compute active extra filters count (excluding search)
